@@ -1,0 +1,17 @@
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.deps.json
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.runtimeconfig.json
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.runtimeconfig.dev.json
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.pdb
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.Service.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\UserManagement.Service.pdb
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.csprojAssemblyReference.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.csproj.CoreCompileInputs.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.RazorAssemblyInfo.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.RazorAssemblyInfo.cs
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.AssemblyInfoInputs.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.AssemblyInfo.cs
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.RazorTargetAssemblyInfo.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.csproj.CopyComplete
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.pdb
