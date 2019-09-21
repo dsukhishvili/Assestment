@@ -17,7 +17,7 @@ namespace UserManagement.Controllers
         private UserService _service { get; set; }
         public UserController(IUserRepository repo)
         {
-            _service = new UserService(repo);
+            _service = new UserService(repo); 
         }
         [HttpPost]
         public async Task<IActionResult> Create(UserDTO user)
