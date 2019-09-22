@@ -10,7 +10,7 @@ namespace UserManagement.Service.DTOModels
 {
     public class BasicUserDTO
     {
-        [Required]
+        [Required(ErrorMessage ="Firsname is required")]
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression("(^[a-zA-Z]+$|^[ა-ჰ]+$)")]
         public string Firstname { get; set; }

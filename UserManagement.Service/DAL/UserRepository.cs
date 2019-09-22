@@ -16,6 +16,7 @@ namespace UserManagement.Service.DAL
         {
             _context = dbContext;
         }
+
         public async Task<User> GetFullUser(int id)
         {
             return await _context.Users

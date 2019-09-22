@@ -18,6 +18,15 @@ using Microsoft.AspNet.OData.Formatter;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNet.OData.Builder;
 using UserManagement.Service.Models;
+using Microsoft.OData.Edm;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using System.IO;
+using UserManagement.Service.Infrastructure;
+using ILogger = UserManagement.Service.Infrastructure.ILogger;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace UserManagement
 {
@@ -35,7 +44,26 @@ namespace UserManagement
         {
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("UserManagement")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddLocalization(o => { o.ResourcesPath = "Resources"; });
+
+            var logger = new Serilogger(
+                Path.Combine(
+                    Directory.CreateDirectory(
+                        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs")).FullName, $"usermanagement_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}.txt"));
+            services.AddSingleton<ILogger>(logger);
+            services.AddMvc(options =>
+            {
+                options.EnableEndpointRouting = false;
+                options.Filters.Add(typeof(ValidateModelStateAttribute));
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddDataAnnotationsLocalization(o =>
+            {
+                o.DataAnnotationLocalizerProvider = (type, factory) =>
+                {
+                    return factory.Create(typeof(SharedResource));
+                };
+            });
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddSwaggerGen(c =>
             {
@@ -66,6 +94,7 @@ namespace UserManagement
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var builder = new ODataConventionModelBuilder(app.ApplicationServices);
+
             builder.EntitySet<User>("Users");
             if (env.IsDevelopment())
             {
@@ -74,9 +103,40 @@ namespace UserManagement
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "User management"); });
             app.UseStaticFiles();
-            app.UseMvc(routeBuilder=> {
+            IList<CultureInfo> supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("en-Us"),
+                new CultureInfo("ka-GE")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("ka-GE"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+            app.UseExceptionHandler(error =>
+            {
+                error.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "application/json";
+                    var exception = context.Features.Get<IExceptionHandlerFeature>();
+                    if(exception != null)
+                    {
+                        var ex = exception.Error;
+                        var logger = context.RequestServices.GetService<ILogger>();
+                        logger.LogException(ex);
+                        byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(exception.Error.Message));
+                        await context.Response.Body.WriteAsync(data, 0, data.Length);
+                    }
+                });
+            });
+            app.UseMvc(routeBuilder =>
+            {
+
+                routeBuilder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
+                routeBuilder.MapODataServiceRoute("odataroute", "api", builder.GetEdmModel());
                 routeBuilder.EnableDependencyInjection();
-                routeBuilder.Expand().Select().OrderBy().Filter().MaxTop(null).Count(Microsoft.AspNet.OData.Query.QueryOptionSetting.Allowed);
             });
         }
     }

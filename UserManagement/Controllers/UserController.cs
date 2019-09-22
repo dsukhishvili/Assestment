@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using UserManagement.Helpers;
 using UserManagement.Service.DAL;
 using UserManagement.Service.DTOModels;
 using UserManagement.Service.Models;
 using UserManagement.Service.Services;
+using IActionResult = Microsoft.AspNetCore.Mvc.IActionResult;
+using ILogger = UserManagement.Service.Infrastructure.ILogger;
 
 namespace UserManagement.Controllers
 {
@@ -20,12 +24,30 @@ namespace UserManagement.Controllers
     {
         private UserService _service { get; set; }
         private ImageHelper _imageHelper { get; set; }
+        public UserContext _userContext { get; set; }
+        public ILogger _logger { get; set; }
 
-        public UserController(IUserRepository repo, IHostingEnvironment hostingEnv)
+        public UserController(IUserRepository repo, IHostingEnvironment hostingEnv, UserContext context, ILogger logger)
         {
             _service = new UserService(repo);
             _imageHelper = new ImageHelper(hostingEnv);
+            _userContext = context;
+            _logger = logger;
+            _logger.LogMessage("test", LogLevel.Warning);
         }
+
+        [HttpGet("odata")]
+        public IActionResult Get(ODataQueryOptions<User> query)
+        {
+            var user = this._userContext.Users.AsQueryable();
+    
+            return Ok(new
+            {
+                Items = query.ApplyTo(user),
+                Count = query.Count?.GetEntityCount(query.Filter?.ApplyTo(user, new ODataQuerySettings()) ?? user)
+            });
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(BasicUserDTO user)
         {

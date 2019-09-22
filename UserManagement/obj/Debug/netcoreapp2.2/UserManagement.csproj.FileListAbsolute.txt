@@ -15,3 +15,10 @@ C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2
 C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.csproj.CopyComplete
 C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.dll
 C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.pdb
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\ka-GE\UserManagement.resources.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.Resources.UserController.ka-GE.resources
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.csproj.GenerateResource.cache
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\ka-GE\UserManagement.resources.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\bin\Debug\netcoreapp2.2\ka-GE\UserManagement.Service.resources.dll
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.Resources.SharedResource.ka-GE.resources
+C:\Users\Digger\source\repos\UserManagement\UserManagement\obj\Debug\netcoreapp2.2\UserManagement.Resources.UserManagement.Service.DTOModels.ka-GE.resources
