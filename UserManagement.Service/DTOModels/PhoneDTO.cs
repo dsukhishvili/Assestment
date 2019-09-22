@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using UserManagement.Service.DAL;
+using UserManagement.Service.Models;
 
-namespace UserManagement.Service.Models
+namespace UserManagement.Service.DTOModels
 {
-    [Table("Phone")]
-    public class Phone : IEntity
+    public class PhoneDTO
     {
-        public int ID { get; set; }
         public PhoneTypes Type { get; set; }
         [StringLength(50, MinimumLength = 4)]
         public string Number { get; set; }

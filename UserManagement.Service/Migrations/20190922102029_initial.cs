@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace UserManagement.Service.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -87,6 +87,21 @@ namespace UserManagement.Service.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 1, "TBilisi" });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 2, "Batumi" });
+
+            migrationBuilder.InsertData(
+                table: "City",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 3, "Kutaisi" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phone_UserID",

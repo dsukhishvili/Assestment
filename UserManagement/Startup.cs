@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UserManagement.Service.DAL;
+using Swashbuckle.AspNetCore.Swagger;
+using UserManagement.Infrastructure;
 
 namespace UserManagement
 {
@@ -30,6 +32,15 @@ namespace UserManagement
                 options.UseSqlServer(Configuration.GetConnectionString("UserManagement")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddSwaggerGen(c => {
+                c.OperationFilter<FileUploadOperation>();
+                c.DescribeAllEnumsAsStrings();
+                c.CustomSchemaIds(type => type.FullName);
+                c.IgnoreObsoleteActions();
+
+                c.SwaggerDoc("v1", new Info { Title = $"{AppDomain.CurrentDomain.FriendlyName}", Version = "v1" });
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,7 +50,9 @@ namespace UserManagement
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "User management"); });
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

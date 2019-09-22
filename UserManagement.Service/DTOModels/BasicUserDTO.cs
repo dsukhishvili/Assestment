@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -7,9 +8,8 @@ using UserManagement.Service.ValidationAttributes;
 
 namespace UserManagement.Service.DTOModels
 {
-    public class UserDTO
+    public class BasicUserDTO
     {
-        public int ID { get; set; }
         [Required]
         [StringLength(50, MinimumLength = 2)]
         [RegularExpression("(^[a-zA-Z]+$|^[ა-ჰ]+$)")]
@@ -26,6 +26,6 @@ namespace UserManagement.Service.DTOModels
         [MinAge(18)]
         public DateTime DateOfBirth { get; set; }
         public int CityID { get; set; }
-        public string Picture { get; set; }
+        public List<PhoneDTO> Phones { get; set; }
     }
 }

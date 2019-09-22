@@ -10,8 +10,8 @@ using UserManagement.Service.DAL;
 namespace UserManagement.Service.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20190921115326_Initial")]
-    partial class Initial
+    [Migration("20190922102029_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,6 +32,23 @@ namespace UserManagement.Service.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("City");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "TBilisi"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Batumi"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "Kutaisi"
+                        });
                 });
 
             modelBuilder.Entity("UserManagement.Service.Models.Phone", b =>
