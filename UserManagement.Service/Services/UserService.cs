@@ -198,5 +198,26 @@ namespace UserManagement.Service.Services
             }
             return fullUserDto;
         }
+
+        public async Task<List<RelatedPersonReportDTO>> GetRelationReport()
+        {
+            var result = new List<RelatedPersonReportDTO>();
+            var relations = await _repo.GetAllRelatedUsers();
+            var groupedRelations = relations.GroupBy(u => new { u.UserID, u.RelationType }).GroupBy(u=>u.Key.UserID).ToList();
+            foreach (var userGroup in groupedRelations)
+            {
+                var resultItem = new RelatedPersonReportDTO
+                {
+                    UserID = userGroup.Key,
+                    Relations = new Dictionary<RelationType, int>()
+                };
+                foreach (var ralationGroup in userGroup)
+                {
+                    resultItem.Relations.Add(ralationGroup.Key.RelationType, ralationGroup.Count());
+                }
+                result.Add(resultItem);
+            }
+            return result;
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace UserManagement.Service.DAL
         Task<User> GetFullUser(int id);
         Task<RelatedUser> GetRelatedUser(int userId, int relatedUserId);
         Task DeleteUser(int id);
+        Task<List<RelatedUser>> GetAllRelatedUsers();
     }
 }

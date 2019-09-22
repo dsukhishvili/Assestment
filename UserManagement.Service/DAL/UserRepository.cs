@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.Service.DTOModels;
 using UserManagement.Service.Models;
 
 namespace UserManagement.Service.DAL
@@ -24,17 +25,6 @@ namespace UserManagement.Service.DAL
                  .Include(u => u.ContactPersons)
                  .FirstOrDefaultAsync();
         }
-
-        public async Task<int> GetUserCount()
-        {
-            return await _context.Users.CountAsync();
-        }
-
-        public async Task<List<User>> GetUsers(int skip, int take)
-        {
-            return await _context.Users.Skip(skip).Take(take).ToListAsync();
-        }
-
         public async Task<RelatedUser> GetRelatedUser(int userId, int relatedUserId)
         {
             return await _context.RelatedUsers.FirstAsync(u => u.UserID == userId && u.RelatedUserID == relatedUserId);
@@ -45,6 +35,11 @@ namespace UserManagement.Service.DAL
             var fullUser = await GetFullUser(id);
             _context.Users.Remove(fullUser);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<RelatedUser>> GetAllRelatedUsers()
+        {
+            return await _context.RelatedUsers.ToListAsync();
         }
     }
 }

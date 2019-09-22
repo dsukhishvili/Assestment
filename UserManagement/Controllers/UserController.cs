@@ -91,6 +91,14 @@ namespace UserManagement.Controllers
             }
             return Ok();
         }
+
+        [HttpGet]
+        [Route("RelationsReport")]
+        public async Task<IActionResult> GetReport()
+        {
+            var report = await _service.GetRelationReport();
+            return Ok(report);
+        }
       
     }
 }
