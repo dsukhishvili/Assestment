@@ -25,6 +25,16 @@ namespace UserManagement.Service.DAL
                  .FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetUserCount()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+        public async Task<List<User>> GetUsers(int skip, int take)
+        {
+            return await _context.Users.Skip(skip).Take(take).ToListAsync();
+        }
+
         public async Task<RelatedUser> GetRelatedUser(int userId, int relatedUserId)
         {
             return await _context.RelatedUsers.FirstAsync(u => u.UserID == userId && u.RelatedUserID == relatedUserId);

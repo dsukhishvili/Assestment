@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Helpers;
 using UserManagement.Service.DAL;
 using UserManagement.Service.DTOModels;
+using UserManagement.Service.Models;
 using UserManagement.Service.Services;
 
 namespace UserManagement.Controllers
@@ -89,5 +91,6 @@ namespace UserManagement.Controllers
             }
             return Ok();
         }
+      
     }
 }

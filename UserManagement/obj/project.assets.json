@@ -1126,6 +1126,20 @@
           "lib/netstandard2.0/Microsoft.AspNetCore.NodeServices.dll": {}
         }
       },
+      "Microsoft.AspNetCore.OData/7.2.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Mvc.Core": "[2.0.0, 3.0.0)",
+          "Microsoft.Extensions.DependencyInjection": "2.0.0",
+          "Microsoft.OData.Core": "[7.6.0, 8.0.0)"
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.OData.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.AspNetCore.OData.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Owin/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -2715,6 +2729,37 @@
         },
         "runtime": {
           "lib/netstandard1.0/_._": {}
+        }
+      },
+      "Microsoft.OData.Core/7.6.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OData.Edm": "[7.6.0]",
+          "Microsoft.Spatial": "[7.6.0]"
+        },
+        "compile": {
+          "lib/netstandard1.1/Microsoft.OData.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Microsoft.OData.Core.dll": {}
+        }
+      },
+      "Microsoft.OData.Edm/7.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.1/Microsoft.OData.Edm.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Microsoft.OData.Edm.dll": {}
+        }
+      },
+      "Microsoft.Spatial/7.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.1/Microsoft.Spatial.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.1/Microsoft.Spatial.dll": {}
         }
       },
       "Microsoft.VisualStudio.Web.CodeGeneration/2.2.3": {
@@ -5684,6 +5729,19 @@
         "microsoft.aspnetcore.nodeservices.nuspec"
       ]
     },
+    "Microsoft.AspNetCore.OData/7.2.1": {
+      "sha512": "GhYZHuBQTcqWvo8bN7HViSr34hhsESW4vkvZWW1gFZxLrq0qaeo2QW4g9AdT33oX1USQk71k3kzQKxc9mvAe3Q==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.odata/7.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Microsoft.AspNetCore.OData.dll",
+        "lib/netstandard2.0/Microsoft.AspNetCore.OData.xml",
+        "microsoft.aspnetcore.odata.7.2.1.nupkg.sha512",
+        "microsoft.aspnetcore.odata.nuspec"
+      ]
+    },
     "Microsoft.AspNetCore.Owin/2.2.0": {
       "sha512": "h9QIdnrH7fOTQgUwjz/v0fDk8j8JNtUB233gYFtngt7jLoVc7vfMEGs9rnOWh8ubz+JdrMt7UBrva07af4Smxw==",
       "type": "package",
@@ -7552,6 +7610,51 @@
         "runtime.json",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Microsoft.OData.Core/7.6.0": {
+      "sha512": "p2U+Q3sCHZiieo7/hCV2AaT88D5aE3neS5rugllorkVNQR3wtr0I0/ZKuxB2UoOwO4gtrFwtTeCEGmZzxBaF4A==",
+      "type": "package",
+      "path": "microsoft.odata.core/7.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.1/Microsoft.OData.Core.dll",
+        "lib/netstandard1.1/Microsoft.OData.Core.xml",
+        "lib/portable-net45+win8+wpa81/Microsoft.OData.Core.dll",
+        "lib/portable-net45+win8+wpa81/Microsoft.OData.Core.xml",
+        "microsoft.odata.core.7.6.0.nupkg.sha512",
+        "microsoft.odata.core.nuspec"
+      ]
+    },
+    "Microsoft.OData.Edm/7.6.0": {
+      "sha512": "D1YTLORPgu3UNI0cg4Waxj6nh4IKXxV7TpvHqQguSZXN3/cn75iDbIzqabxo7FqF2+qDo77g1EtH3utZyrRhSQ==",
+      "type": "package",
+      "path": "microsoft.odata.edm/7.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.1/Microsoft.OData.Edm.dll",
+        "lib/netstandard1.1/Microsoft.OData.Edm.xml",
+        "lib/portable-net45+win8+wpa81/Microsoft.OData.Edm.dll",
+        "lib/portable-net45+win8+wpa81/Microsoft.OData.Edm.xml",
+        "microsoft.odata.edm.7.6.0.nupkg.sha512",
+        "microsoft.odata.edm.nuspec"
+      ]
+    },
+    "Microsoft.Spatial/7.6.0": {
+      "sha512": "5llx2KOxx9iDL0BL44U9piAJjS/0rbPaJ3SS6UMJra+ZvSvJGmY1mb1U78YGqG65pUaqpxkqxLaZfwzfhs4EdQ==",
+      "type": "package",
+      "path": "microsoft.spatial/7.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard1.1/Microsoft.Spatial.dll",
+        "lib/netstandard1.1/Microsoft.Spatial.xml",
+        "lib/portable-net45+win8+wpa81/Microsoft.Spatial.dll",
+        "lib/portable-net45+win8+wpa81/Microsoft.Spatial.xml",
+        "microsoft.spatial.7.6.0.nupkg.sha512",
+        "microsoft.spatial.nuspec"
       ]
     },
     "Microsoft.VisualStudio.Web.CodeGeneration/2.2.3": {
@@ -13051,6 +13154,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.2": [
       "Microsoft.AspNetCore.App >= 2.2.0",
+      "Microsoft.AspNetCore.OData >= 7.2.1",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3",
@@ -13108,6 +13212,10 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "Microsoft.AspNetCore.OData": {
+            "target": "Package",
+            "version": "[7.2.1, )"
           },
           "Microsoft.AspNetCore.Razor.Design": {
             "suppressParent": "All",
