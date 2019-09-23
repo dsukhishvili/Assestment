@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -284,6 +285,16 @@ namespace UserManagement.Service.Services
                 throw e;
             }
 
+        }
+
+        public dynamic QueryUser(ODataQueryOptions<User> query)
+        {
+            var userQueryable = _repo.GetUserQueryable();
+            return new
+            {
+                Items = query.ApplyTo(userQueryable),
+                Count = query.Count?.GetEntityCount(query.Filter?.ApplyTo(userQueryable, new ODataQuerySettings()) ?? userQueryable)
+            };
         }
     }
 }

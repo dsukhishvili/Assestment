@@ -42,5 +42,10 @@ namespace UserManagement.Service.DAL
         {
             return await _context.RelatedUsers.ToListAsync();
         }
+
+        public IQueryable<User> GetUserQueryable()
+        {
+            return _context.Users.AsQueryable();
+        }
     }
 }

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UserManagement.Service.DAL;
 using Swashbuckle.AspNetCore.Swagger;
@@ -23,12 +22,12 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using System.IO;
 using UserManagement.Service.Infrastructure;
-using ILogger = UserManagement.Service.Infrastructure.ILogger;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Text;
 using Newtonsoft.Json;
-using UserManagement.Service.Extensions;
-using UserManagement.Service.Extentions;
+using UserManagement.Extensions;
+using UserManagement.Extentions;
+using AutoMapper;
 
 namespace UserManagement
 {
@@ -46,12 +45,20 @@ namespace UserManagement
         {
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("UserManagement")));
-
+            //logger Configuration
             var logger = new Serilogger(
                 Path.Combine(
                     Directory.CreateDirectory(
                         Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"logs")).FullName, $"usermanagement_{DateTime.Now.Year}-{DateTime.Now.Month}-{DateTime.Now.Day}.txt"));
             services.AddSingleton<ILogger>(logger);
+            // Auto Mapper configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            //mvc configuration
             services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
@@ -65,7 +72,9 @@ namespace UserManagement
                     return factory.Create(typeof(SharedResource));
                 };
             });
+            //repository
             services.AddScoped<IUserRepository, UserRepository>();
+            //swagger configuration
             services.AddSwaggerGen(c =>
             {
                 c.OperationFilter<FileUploadOperation>();
@@ -76,6 +85,7 @@ namespace UserManagement
                 c.SwaggerDoc("v1", new Info { Title = $"{AppDomain.CurrentDomain.FriendlyName}", Version = "v1" });
             }
             );
+            //adding odata
             services.AddOData();
             services.AddMvcCore(options =>
             {
@@ -94,12 +104,14 @@ namespace UserManagement
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //culture middleware
             app.UseAcceptanceLanguageMiddleware();
+            //global exception middleware
             app.UseExceptionHandlerMiddleware();
-
+            //odata
             var builder = new ODataConventionModelBuilder(app.ApplicationServices);
-
             builder.EntitySet<User>("Users");
+            //swagger
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "User management"); });
             app.UseStaticFiles();

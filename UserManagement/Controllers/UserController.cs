@@ -12,6 +12,8 @@ using UserManagement.Service.DTOModels;
 using UserManagement.Service.Models;
 using UserManagement.Service.Services;
 using UserManagement.Service.Infrastructure;
+using AutoMapper;
+using UserManagement.ViewModels;
 
 namespace UserManagement.Controllers
 {
@@ -20,77 +22,73 @@ namespace UserManagement.Controllers
     public class UserController : ControllerBase
     {
         private UserService _service { get; set; }
-        public UserContext _userContext { get; set; }
+        private readonly IMapper _mapper;
 
-        public UserController(IUserRepository repo, IHostingEnvironment hostingEnv, UserContext context, ILogger logger)
+        public UserController(IUserRepository repo, IHostingEnvironment hostingEnv,
+            ILogger logger, IMapper mapper)
         {
             _service = new UserService(repo,hostingEnv, logger);
-            _userContext = context;
+            _mapper = mapper;
         }
 
         [HttpGet("odata")]
         public IActionResult Get(ODataQueryOptions<User> query)
         {
-            var user = this._userContext.Users.AsQueryable();
-    
-            return Ok(new
-            {
-                Items = query.ApplyTo(user),
-                Count = query.Count?.GetEntityCount(query.Filter?.ApplyTo(user, new ODataQuerySettings()) ?? user)
-            });
+            var result = _service.QueryUser(query);
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(BasicUserDTO user)
+        public async Task<IActionResult> Create(BasicUserViewModel user)
         {
-            await _service.CreateUser(user);
+            var userDto = _mapper.Map<BasicUserDTO>(user);
+            await _service.CreateUser(userDto);
             return Ok();
         }
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(int id, BasicUserDTO userInfo)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id,[FromBody]BasicUserViewModel userInfo)
         {
             var userIdIsValid = await _service.CheckUserById(id);
             if (!userIdIsValid)
                 return BadRequest("Provided Id is invalid");
-            await _service.UpdateUserBasicInfo(id, userInfo);
+            var userDto = _mapper.Map<BasicUserDTO>(userInfo);
+            await _service.UpdateUserBasicInfo(id, userDto);
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult>GetUser(int id)
         {
             var userIdIsValid = await _service.CheckUserById(id);
             if (!userIdIsValid)
                 return BadRequest("User was not found with the provided Id");
-            var result = await _service.GetfullUser(id);
-            
-            return Ok(result);
+            var fullUserDto = await _service.GetfullUser(id);
+            var userVm = _mapper.Map<FullUserViewModel>(fullUserDto);
+            return Ok(userVm);
         }
 
-        [HttpPost]
-        [Route("RelatedUser")]
-        public async Task<IActionResult> UpsertContactPerson(int userId, RelatedUserDto relatedUserDto)
+        [HttpPost("{userId}/RelatedUser")]
+        public async Task<IActionResult> UpsertContactPerson(int userId, RelatedUserViewModel relatedUserVM)
         {
+            var relatedUserDto = _mapper.Map<RelatedUserDto>(relatedUserVM);
             await _service.UpsertRelatedUser(userId, relatedUserDto);
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("RelatedUser")]
+        [HttpDelete("{userId}/RelatedUsers/{relatedUserId}")]
         public async Task<IActionResult> RemoveContactPerson(int userId, int relatedUserId)
         {
             await _service.DeleteRelatedUser(userId, relatedUserId);
             return Ok();
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             await _service.DeleteUser(id);
             return Ok();
         }
 
-        [HttpPost]
-        [Route("UserImage")]
+        [HttpPost("{userId}/UserImage")]
         public async Task<IActionResult> UploadImage(int userId, IFormFile file)
         {
             var userIdIsValid = await _service.CheckUserById(userId);
@@ -104,15 +102,6 @@ namespace UserManagement.Controllers
             }
             else
                 return BadRequest("Invalid image format, should be .jpeg");
-        }
-
-        [HttpGet]
-        [Route("RelationsReport")]
-        public async Task<IActionResult> GetReport()
-        {
-            var report = await _service.GetRelationReport();
-            return Ok(report);
-        }
-      
+        }      
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserManagement.Service.Models;
@@ -12,5 +13,6 @@ namespace UserManagement.Service.DAL
         Task<RelatedUser> GetRelatedUser(int userId, int relatedUserId);
         Task DeleteUser(int id);
         Task<List<RelatedUser>> GetAllRelatedUsers();
+        IQueryable<User> GetUserQueryable();
     }
 }
