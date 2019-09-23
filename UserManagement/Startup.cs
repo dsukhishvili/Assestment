@@ -27,6 +27,8 @@ using ILogger = UserManagement.Service.Infrastructure.ILogger;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Text;
 using Newtonsoft.Json;
+using UserManagement.Service.Extensions;
+using UserManagement.Service.Extentions;
 
 namespace UserManagement
 {
@@ -44,7 +46,6 @@ namespace UserManagement
         {
             services.AddDbContext<UserContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("UserManagement")));
-            services.AddLocalization(o => { o.ResourcesPath = "Resources"; });
 
             var logger = new Serilogger(
                 Path.Combine(
@@ -93,44 +94,15 @@ namespace UserManagement
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAcceptanceLanguageMiddleware();
+            app.UseExceptionHandlerMiddleware();
+
             var builder = new ODataConventionModelBuilder(app.ApplicationServices);
 
             builder.EntitySet<User>("Users");
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
             app.UseSwagger();
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "User management"); });
             app.UseStaticFiles();
-            IList<CultureInfo> supportedCultures = new List<CultureInfo>
-            {
-                new CultureInfo("en-Us"),
-                new CultureInfo("ka-GE")
-            };
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("ka-GE"),
-                SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
-            });
-            app.UseExceptionHandler(error =>
-            {
-                error.Run(async context =>
-                {
-                    context.Response.StatusCode = 500;
-                    context.Response.ContentType = "application/json";
-                    var exception = context.Features.Get<IExceptionHandlerFeature>();
-                    if(exception != null)
-                    {
-                        var ex = exception.Error;
-                        var logger = context.RequestServices.GetService<ILogger>();
-                        logger.LogException(ex);
-                        byte[] data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(exception.Error.Message));
-                        await context.Response.Body.WriteAsync(data, 0, data.Length);
-                    }
-                });
-            });
             app.UseMvc(routeBuilder =>
             {
 

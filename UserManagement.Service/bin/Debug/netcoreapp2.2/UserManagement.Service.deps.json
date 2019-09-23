@@ -19,11 +19,6 @@
         },
         "runtime": {
           "UserManagement.Service.dll": {}
-        },
-        "resources": {
-          "ka-GE/UserManagement.Service.resources.dll": {
-            "locale": "ka-GE"
-          }
         }
       },
       "Microsoft.AspNetCore.Hosting.Abstractions/2.0.0": {

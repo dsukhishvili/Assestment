@@ -7,14 +7,11 @@ using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using UserManagement.Helpers;
 using UserManagement.Service.DAL;
 using UserManagement.Service.DTOModels;
 using UserManagement.Service.Models;
 using UserManagement.Service.Services;
-using IActionResult = Microsoft.AspNetCore.Mvc.IActionResult;
-using ILogger = UserManagement.Service.Infrastructure.ILogger;
+using UserManagement.Service.Infrastructure;
 
 namespace UserManagement.Controllers
 {
@@ -23,17 +20,12 @@ namespace UserManagement.Controllers
     public class UserController : ControllerBase
     {
         private UserService _service { get; set; }
-        private ImageHelper _imageHelper { get; set; }
         public UserContext _userContext { get; set; }
-        public ILogger _logger { get; set; }
 
         public UserController(IUserRepository repo, IHostingEnvironment hostingEnv, UserContext context, ILogger logger)
         {
-            _service = new UserService(repo);
-            _imageHelper = new ImageHelper(hostingEnv);
+            _service = new UserService(repo,hostingEnv, logger);
             _userContext = context;
-            _logger = logger;
-            _logger.LogMessage("test", LogLevel.Warning);
         }
 
         [HttpGet("odata")]
@@ -69,10 +61,9 @@ namespace UserManagement.Controllers
         {
             var userIdIsValid = await _service.CheckUserById(id);
             if (!userIdIsValid)
-                return BadRequest("Provided Id is invalid");
+                return BadRequest("User was not found with the provided Id");
             var result = await _service.GetfullUser(id);
-            if (!string.IsNullOrEmpty(result.RelativePath))
-                result.ImageBase64 = _imageHelper.GetImageFromDisk(result.RelativePath);
+            
             return Ok(result);
         }
 
@@ -108,10 +99,11 @@ namespace UserManagement.Controllers
 
             if (file.ContentType == "image/jpeg")
             {
-                var relativePath = await _imageHelper.SaveImageToDisk(userId, file);
-                await _service.UpdateUserPicture(userId, relativePath);
+                await _service.UpdateUserPicture(userId, file);
+                return Ok();
             }
-            return Ok();
+            else
+                return BadRequest("Invalid image format, should be .jpeg");
         }
 
         [HttpGet]
